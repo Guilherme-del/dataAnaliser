@@ -17,8 +17,16 @@ const App: React.FC = () => {
   ChartJS.register(ArcElement, Tooltip, Legend);
 
   useEffect(() => {
-      fetchPeople()
-  }, [])
+    if(people.length <= 0 ){
+      fetchPeople()  
+    }
+    else if (labelChart.length <= 0 || dataChart.length <= 0){
+      manipulatedDataChart()
+    }
+    else {
+      return
+    }
+  }, [people])
 
   //chart config const
   const infoChart = {
@@ -54,9 +62,11 @@ const App: React.FC = () => {
     const dataChart = people.map((items) => {
       return (items.participation)
     })
-    setLabelChart(labelChart)
-    setDataChart(dataChart)
+      console.log(labelChart)
+      setLabelChart(labelChart)
+      setDataChart(dataChart)
   }
+
   async function delay(ms: number) {
     await new Promise<void>(resolve => setTimeout(() => resolve(), ms));
   }
@@ -79,9 +89,12 @@ const App: React.FC = () => {
             pauseOnHover: true,
             draggable: true
           });
-          fetchPeople()
-          delay(1500).then(() => {
-            manipulatedDataChart()
+          /*
+          Todo:
+          Manipular Estados
+          */
+          delay(1000).then(() => {
+            window.location.reload();
           });
         }
         else {
@@ -125,9 +138,12 @@ const App: React.FC = () => {
             pauseOnHover: true,
             draggable: true
           });
-          fetchPeople()
-          delay(1500).then(() => {
-            manipulatedDataChart()
+          /*
+          Todo:
+          Manipular Estados
+          */
+          delay(1000).then(() => {
+            window.location.reload();
           });
         }
         else {
