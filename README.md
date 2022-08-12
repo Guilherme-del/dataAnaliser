@@ -2,14 +2,14 @@
 
 
 ## Built with
-* [React.js](https://nextjs.org/)
+* [React.js](https://reactjs.org/)
 * [Typescript](https://www.typescriptlang.org/)
 * [Css](https://www.css.org//)
 * [Firebase](https://firebase.google.com/)
 
 
 ## Running the project
-This is a [React.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [React.js](https://reactjs.org/) project bootstrapped with [`create-react-app`](https://reactjs.org/docs/create-a-new-react-app.html).
 
 ## get the config files first
 Inside the following rep put the .env file
