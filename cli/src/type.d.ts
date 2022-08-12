@@ -12,6 +12,10 @@ interface DataType {
     participation: number
   }
 
+interface ChartLabel {
+  label : Array
+}
+
 type PeopleProps = {
     people: IPeople
 }

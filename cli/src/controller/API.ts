@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import config from '../config/config'
+import { toast } from 'react-toastify';
 
 export const getPeople = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {
@@ -16,17 +17,25 @@ export const addPeople = async (
   formData: IPeople
 ): Promise<AxiosResponse<ApiDataType>> => {
   try {
-    const todo: Omit<IPeople, 'id'> = {
+    const People: Omit<IPeople, 'id'> = {
       firstName: formData.firstName,
       lastName: formData.lastName,
-      participation: formData.participation
+      participation: Number(formData.participation)
     }
-    const saveTodo: AxiosResponse<ApiDataType> = await axios.post(
+    const savePeople: AxiosResponse<ApiDataType> = await axios.post(
       config.baseUrl + '/addPerson',
-      todo
+      People
     )
-    return saveTodo
+    return savePeople
   } catch (error) {
+    toast.error('Erro,tente novamente!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true
+    }); 
     throw new Error()
   }
 }
@@ -35,14 +44,14 @@ export const updatePeople = async (
   todo: IPeople
 ): Promise<AxiosResponse<ApiDataType>> => {
   try {
-    const todoUpdate: Pick<IPeople, 'firstName'> = {
+    const peopleUpdate: Pick<IPeople, 'firstName'> = {
       firstName: 'true',
     }
-    const updatedTodo: AxiosResponse<ApiDataType> = await axios.put(
-      `${config.baseUrl}/edit-todo/${todo}`,
-      todoUpdate
+    const updatedPeople: AxiosResponse<ApiDataType> = await axios.put(
+      `${config.baseUrl}/editPeople/${todo}`,
+      peopleUpdate
     )
-    return updatedTodo
+    return updatedPeople
   } catch (error) {
     throw new Error()
   }
@@ -52,11 +61,19 @@ export const deletePeople = async (
   id: string
 ): Promise<AxiosResponse<ApiDataType>> => {
   try {
-    const deletedTodo: AxiosResponse<ApiDataType> = await axios.delete(
-      `${config.baseUrl}/delete-todo/${id}`
+    const deletedPeople: AxiosResponse<ApiDataType> = await axios.delete(
+      `${config.baseUrl}/deletePerson/${id}`
     )
-    return deletedTodo
+    return deletedPeople
   } catch (error) {
+    toast.error('Erro,tente novamente!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true
+    }); 
     throw new Error()
   }
 }

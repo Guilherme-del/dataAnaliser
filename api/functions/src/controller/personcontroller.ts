@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable valid-jsdoc */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Response} from "express";
@@ -6,7 +7,7 @@ import {db} from "../config/config";
 type PeopleType = {
   firstName: string;
   lastName: string;
-  participation: Float32Array;
+  participation: number;
 };
 
 type Request = {
@@ -43,14 +44,14 @@ type Request = {
  */
 const getPeople = async ( req: Request, res: Response) => {
   try {
-    const allEntries: PeopleType[] = [];
+    const allPeople: PeopleType[] = [];
     const querySnapshot = await db.collection("people").get();
-    querySnapshot.forEach((doc: any) => allEntries.push(doc.data()));
+    querySnapshot.forEach((doc: any) => allPeople.push(doc.data()));
 
     return res.status(200).send({
       status: "success",
       message: "people listed successfully",
-      people: allEntries});
+      people: allPeople});
   } catch (error) {
     if (error instanceof Error) {
       return res.status(500).json(error);
@@ -94,34 +95,82 @@ const getPeople = async ( req: Request, res: Response) => {
  *         schema:
  *          type: object
  *          properties:
- *            email:
  *              type: string
  *              description: objeto adicionado.
- *              example:{
-                        id: id gerado,
-                        firstName: Artemis,
-                        lastName: Ipsum,
-                        participation: 5,
-                        }
+ *              people:{
+ *                       id: id gerado,
+ *                       firstName: Artemis,
+ *                       lastName: Ipsum,
+ *                        participation: 5,
+ *                        }
+ *       400:
+ *         description: Error!
+ *         schema:
+ *         type: object
+ *         properties:
+ *            people:
+ *              type: string
+ *              description: nao adicionado.
  */
 const addPerson = async (req: Request, res: Response) => {
   const {firstName, lastName, participation} = req.body;
   try {
+    const allPeople: PeopleType[] = [];
     const people = db.collection("people").doc();
+    const querySnapshot = await db.collection("people").get();
+    querySnapshot.forEach((doc: any) => allPeople.push(doc.data()));
 
-    const personObject = {
-      id: people.id,
-      firstName: firstName,
-      lastName: lastName,
-      participation: participation,
-    };
+    if (typeof participation === "number") {
+      const result = allPeople.reduce<number>((accumulator, obj) => {
+        return accumulator + obj.participation;
+      }, 0);
+      if (result + participation > 100) {
+        res.status(401).send({
+          status: "error",
+          message: "people not Added",
+        });
+      } else {
+        const personObject = {
+          id: people.id,
+          firstName: firstName,
+          lastName: lastName,
+          participation: participation,
+        };
+        await people.set(personObject);
+        res.status(200).send({
+          status: "success",
+          message: "people added successfully",
+          people: personObject,
+        });
+      }
+    } else {
+      res.status(401).send({
+        status: "error",
+        message: "people not Added",
+      });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json(error.message);
+    }
+  }
+};
 
-    await people.set(personObject);
+const deletePerson = async (req: Request, res: Response) => {
+  const {peopleId} = req.params;
 
-    res.status(200).send({
+  try {
+    const people = db.collection("people").doc(peopleId);
+
+    await people.delete().catch((error) => {
+      return res.status(400).json({
+        status: "error",
+        message: error.message,
+      });
+    });
+    return res.status(200).json({
       status: "success",
-      message: "people added successfully",
-      people: personObject,
+      message: "person deleted successfully",
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -130,4 +179,4 @@ const addPerson = async (req: Request, res: Response) => {
   }
 };
 
-export {getPeople, addPerson};
+export {getPeople, addPerson, deletePerson};
