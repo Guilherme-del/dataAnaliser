@@ -4,7 +4,7 @@
 ## Built with
 * [React.js](https://nextjs.org/)
 * [Typescript](https://www.typescriptlang.org/)
-* [Sass](https://sass-lang.com/)
+* [Css](https://sass-lang.com/)
 * [Firebase](https://www.themoviedb.org/)
 
 
@@ -20,7 +20,7 @@ put your `.env` && follow the
 Inside the following rep put the config.ts file
 #### `cli/src/config/`
 put your `.env` && follow the 
-#### ``cli/src/config/example.config.ts`
+#### `cli/src/config/example.config.ts`
 
 In the project client directory, you can run:
 #### `npm i`
