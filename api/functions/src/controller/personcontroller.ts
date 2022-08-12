@@ -121,7 +121,7 @@ const addPerson = async (req: Request, res: Response) => {
     res.status(200).send({
       status: "success",
       message: "people added successfully",
-      data: personObject,
+      people: personObject,
     });
   } catch (error) {
     if (error instanceof Error) {
