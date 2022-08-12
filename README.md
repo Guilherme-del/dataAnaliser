@@ -4,8 +4,8 @@
 ## Built with
 * [React.js](https://nextjs.org/)
 * [Typescript](https://www.typescriptlang.org/)
-* [Css](https://sass-lang.com/)
-* [Firebase](https://www.themoviedb.org/)
+* [Css](https://www.css.org//)
+* [Firebase](https://firebase.google.com/)
 
 
 ## Running the project
