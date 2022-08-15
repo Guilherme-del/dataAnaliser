@@ -11,18 +11,18 @@
 ## Running the project
 This is a [React.js](https://reactjs.org/) project bootstrapped with [`create-react-app`](https://reactjs.org/docs/create-a-new-react-app.html).
 
-## get the config files first
-Inside the following rep put the .env file
+## Configure it!
+Inside the following path put your .env file
 #### `api/functions/`
 put your `.env` && follow the 
 #### `api/functions/.env.example`
 
-Inside the following rep put the config.ts file
+Inside the following path put your config.ts file
 #### `cli/src/config/`
 put your `.env` && follow the 
 #### `cli/src/config/example.config.ts`
 
-In the project client directory, you can run:
+In the client directory, you can run:
 #### `npm i`
 #### `npm start`
 
