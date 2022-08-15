@@ -2,7 +2,7 @@
 
 
 ## Built with
-* [node.js](https://nodejs.org/en/)
+* [Node.js](https://nodejs.org/en/)
 * [React.js](https://reactjs.org/)
 * [Typescript](https://www.typescriptlang.org/)
 * [StyledComponents](https://styled-components.com/)
