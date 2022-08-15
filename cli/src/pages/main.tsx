@@ -174,7 +174,7 @@ const App: React.FC = () => {
       <SecondaryText>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</SecondaryText>
       <DataInfo>
         <TableStyle>
-          <Table rowKey='lastName' dataSource={people ? people : []} pagination={{ pageSize: 5 }}>
+          <Table rowKey='lastName' dataSource={people ? people : []} pagination={{ pageSize: 2 }}>
             <Column title="First Name" dataIndex="firstName" key="firstName" />
             <Column title="Last Name" dataIndex="lastName" key="lastName" />
             <Column title="Participation" dataIndex="participation" key="participation" />
