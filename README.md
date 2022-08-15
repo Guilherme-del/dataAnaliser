@@ -4,7 +4,7 @@
 ## Built with
 * [React.js](https://reactjs.org/)
 * [Typescript](https://www.typescriptlang.org/)
-* [Css](https://www.css.org//)
+* [StyledComponents](https://styled-components.com/)
 * [Firebase](https://firebase.google.com/)
 
 
