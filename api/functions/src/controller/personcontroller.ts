@@ -4,16 +4,6 @@
 import {Response} from "express";
 import {db} from "../config/config";
 
-type PeopleType = {
-  firstName: string;
-  lastName: string;
-  participation: number;
-};
-
-type Request = {
-  body: PeopleType;
-  params: { peopleId: string };
-};
 
 /**
  * @swagger
@@ -42,7 +32,7 @@ type Request = {
                         participation: 5,
                         }]
  */
-const getPeople = async ( req: Request, res: Response) => {
+const getPeople = async ( req: IRequest, res: Response) => {
   try {
     const allPeople: PeopleType[] = [];
     const querySnapshot = await db.collection("people").get();
@@ -112,7 +102,7 @@ const getPeople = async ( req: Request, res: Response) => {
  *              type: string
  *              description: nao adicionado.
  */
-const addPerson = async (req: Request, res: Response) => {
+const addPerson = async (req: IRequest, res: Response) => {
   const {firstName, lastName, participation} = req.body;
   try {
     const allPeople: PeopleType[] = [];
@@ -155,8 +145,42 @@ const addPerson = async (req: Request, res: Response) => {
     }
   }
 };
-
-const deletePerson = async (req: Request, res: Response) => {
+/**
+ * @swagger
+ *
+ * /app/deletePerson:
+ *   post:
+ *     summary: deleta uma pessoa
+ *     tags:
+ *       - People
+ *     description: deleta uma pessoa.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: id
+ *         type: string
+ *         description: id da pessoa.
+ *         example: fx892fat862d
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Sucesso!
+ *         schema:
+ *          type: object
+ *          properties:
+ *              type: string
+ *              description: objeto removido com sucesso.
+ *       500:
+ *         description: Error!
+ *         schema:
+ *         type: object
+ *         properties:
+ *            people:
+ *              type: string
+ *              description: nao adicionado.
+ */
+const deletePerson = async (req: IRequest, res: Response) => {
   const {peopleId} = req.params;
 
   try {

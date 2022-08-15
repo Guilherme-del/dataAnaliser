@@ -3,11 +3,16 @@ import { Table, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ToastContainer, toast } from 'react-toastify';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import * as config from "../config/config"
+//components
 import { Doughnut } from 'react-chartjs-2';
 import AddPeople from '../components/Addpeople'
 import { getPeople, addPeople, deletePeople } from '../controller/API'
+//styles
 import "antd/dist/antd.css";
 import 'react-toastify/dist/ReactToastify.css';
+import { Main,PrimaryText,SecondaryText,DataInfo,TableStyle, ChartComponent } from '../assets/styles/styled';
+
 
 const App: React.FC = () => {
   const [people, setPeople] = useState<IPeople[]>([])
@@ -24,6 +29,7 @@ const App: React.FC = () => {
       manipulatedDataChart()
     }
     else {
+      console.log(infoChart,dataChart)
       return
     }
   }, [people])
@@ -34,23 +40,9 @@ const App: React.FC = () => {
     datasets: [
       {
         data: dataChart ? dataChart : [],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
+        backgroundColor: config.default.colours,
+        borderColor: config.default.colours,
+        borderWidth:1,
       },
     ],
   };
@@ -162,24 +154,24 @@ const App: React.FC = () => {
 
 
   return (
-    <main className='App'>
+    <Main className='App'>
       <>
         <AddPeople savePeople={handleSavePeople} />
-        <h1>DATA</h1>
-        <h2>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h2>
-        <div className='dataInfo'>
-          <div className='Table'>
+        <PrimaryText>DATA</PrimaryText>
+        <SecondaryText>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</SecondaryText>
+        <DataInfo>
+          <TableStyle>
             <Table pagination={{ pageSize: 5 }} dataSource={people ? people : []}>
               <Column title="First Name" dataIndex="firstName" key="firstName" />
               <Column title="Last Name" dataIndex="lastName" key="lastName" />
               <Column title="Participation" dataIndex="participation" key="participation" />
               <Column title="Remove" render={(_text, record, _index) => <Button onClick={(e) => { handleDeletePeople(e, record) }} icon={<DeleteOutlined />} />} />
             </Table>
-          </div>
-          <div className='chartComponent'>
+          </TableStyle>
+          <ChartComponent>
             <Doughnut data={infoChart} />
-          </div>
-        </div>
+          </ChartComponent>
+        </DataInfo>
       </>
       <ToastContainer
         position="top-right"
@@ -192,7 +184,7 @@ const App: React.FC = () => {
         draggable
         pauseOnHover
       />
-    </main>
+    </Main>
 
   )
 }
