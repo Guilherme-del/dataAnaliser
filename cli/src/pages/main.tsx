@@ -161,11 +161,11 @@ const App: React.FC = () => {
         <SecondaryText>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</SecondaryText>
         <DataInfo>
           <TableStyle>
-            <Table pagination={{ pageSize: 5 }} dataSource={people ? people : []}>
+            <Table rowKey='lastName' dataSource={people ? people : []} pagination={{ pageSize: 5 }}>
               <Column title="First Name" dataIndex="firstName" key="firstName" />
               <Column title="Last Name" dataIndex="lastName" key="lastName" />
               <Column title="Participation" dataIndex="participation" key="participation" />
-              <Column title="Remove" render={(_text, record, _index) => <Button onClick={(e) => { handleDeletePeople(e, record) }} icon={<DeleteOutlined />} />} />
+              <Column title="Remove" key="btns" render={(_text, record, _index) => <Button onClick={(e) => { handleDeletePeople(e, record) }} icon={<DeleteOutlined />} />} />
             </Table>
           </TableStyle>
           <ChartComponent>
