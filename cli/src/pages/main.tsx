@@ -34,12 +34,12 @@ const App: React.FC = () => {
     }
   }, [people])
 
-  //chart config const
+  //chart config variable
   const infoChart = {
-    labels: labelChart ? labelChart : [],
+    labels: labelChart ? labelChart : ['NoData'],
     datasets: [
       {
-        data: dataChart ? dataChart : [],
+        data: dataChart ? dataChart : [0],
         backgroundColor: config.default.colours,
         borderColor: config.default.colours,
         borderWidth:1,
@@ -152,7 +152,6 @@ const App: React.FC = () => {
       .catch((err) => console.log(err))
   }
 
-
   return (
     <Main className='App'>
       <>
@@ -185,7 +184,6 @@ const App: React.FC = () => {
         pauseOnHover
       />
     </Main>
-
   )
 }
 
