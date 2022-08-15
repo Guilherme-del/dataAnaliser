@@ -29,4 +29,4 @@ In the project client directory, you can run:
 It runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser. 
 
-* [Todo](https://github.com/Guilherme-del/t10Assessment/releases/tag/0.0.4)
+* [Todo](https://github.com/Guilherme-del/t10Assessment/issues)
