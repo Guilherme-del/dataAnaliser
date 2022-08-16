@@ -1,6 +1,5 @@
 # t10Assessment
 
-
 ## Built with
 * [Node.js](https://nodejs.org/en/)
 * [React.js](https://reactjs.org/)
@@ -24,6 +23,9 @@ put your `.env` && follow the
 #### `cli/src/config/example.config.ts`
 
 ## If you want to request my configuration files where there's my database url just request on my social medias [ask me!](https://github.com/Guilherme-del/Guilherme-del). I didn't left my conf files on repo because of [Security](https://firebase.google.com/docs/firestore/security/get-started).
+
+## Run it!
+As it's an serverless api you just have to provide the url link as shown on configure it section , but if you want to run it on development mode [check it out!](https://firebase.google.com/docs/emulator-suite) 
 
 In the client directory, you can run:
 #### `npm i`
