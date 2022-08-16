@@ -16,8 +16,9 @@ box-sizing: border-box;
 text-align: center;
 `;
 
-export const Form = styled.section 
-`display: flex;
+export const FormArea = styled.section 
+`
+display: flex;
 justify-content: center;
 align-items: center;
 flex-direction: row;
@@ -30,7 +31,6 @@ margin-bottom: ${px2vw(32)};
 @media (max-width: 768px) {
   flex-direction: column; 
 }
-
 `;
 
 export const Fields = styled.section

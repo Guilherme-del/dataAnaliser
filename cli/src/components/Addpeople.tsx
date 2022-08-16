@@ -1,34 +1,41 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { Button } from "antd";
+import React from 'react';
+import { Button, Form, Input,InputNumber } from "antd";
 
-import { Form, Fields, Input } from "../assets/styles/styled"
+import { FormArea } from "../assets/styles/styled"
 import "antd/dist/antd.css";
 import { SendOutlined } from '@ant-design/icons';
 
 type Props = {
-  savePeople: (e: React.FormEvent, formData: IPeople | any) => void
+  savePeople: (e: IPeople) => void
 }
 
-const AddPeople: React.FC<Props> = ({ savePeople }) => {
-  const [formData, setFormData] = useState<IPeople | {}>()
-
-  const handleForm = (e: React.FormEvent<HTMLInputElement>): void => {
-    setFormData({
-      ...formData,
-      [e.currentTarget.id]: e.currentTarget.value,
-    })
-  }
+const AddPeople: React.FC<Props> = ({savePeople}) => {
+  const [form] = Form.useForm();
+ 
+  const onFinish = (values : IPeople | any) => {
+    savePeople(values);
+    form.resetFields();
+  };
 
   return (
-    <Form>
-      <Fields>
-        <Input placeholder='First Name' onChange={handleForm} type='text' id='firstName' />
-        <Input placeholder='Last Name' onChange={handleForm} type='text' id='lastName' />
-        <Input placeholder='Participation' onChange={handleForm} type='text' id='participation' />
-      </Fields>
-      <Button size='large' onClick={(e) => { savePeople(e, formData) }} disabled={formData === undefined ? true : false} icon={<SendOutlined />}> SEND </Button>
+  <FormArea>
+    <Form form={form} layout="inline" initialValues={{ firstName:'',lastName:'',participation:'' }} onFinish = {onFinish}>
+        <Form.Item name="firstName" rules={[{ required: true, message: 'Please input your first name!' }]}>
+          <Input placeholder='First Name' type='text' id='firstName' />
+        </Form.Item>
+        <Form.Item rules={[{ required: true, message: 'Please input your last name!' }]} name="lastName">
+          <Input placeholder='Last Name' type='text' id='lastName' />
+        </Form.Item>
+        <Form.Item rules={[{ required: true, message: 'Please input your participation!' }]} name="participation">
+          <InputNumber min={1} max={100} placeholder='Participation' type='text' id='participation' />
+        </Form.Item>
+        <Form.Item>
+          <Button htmlType="submit" size='middle' icon={<SendOutlined />}> SEND </Button>
+        </Form.Item>
     </Form>
+  </FormArea>
   )
 }
 
