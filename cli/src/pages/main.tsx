@@ -7,8 +7,8 @@ import * as config from "../config/config"
 //components
 import { Doughnut } from 'react-chartjs-2';
 import AddPeople from '../components/Addpeople'
-import { getPeople, addPeople, deletePeople } from '../controller/API'
-import { delay } from '../controller/mainFunc';
+import { getPeople, addPeople, deletePeople } from '../controller/apiCall/API'
+import { delay, newSavedArr, newDeletedArr } from '../controller/mainFunc/mainFunc';
 //styles
 import "antd/dist/antd.css";
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,20 +26,18 @@ const App: React.FC = () => {
     if (people.length <= 0) {
       fetchPeople()
     }
-    else if (labelChart.length <= 0 || dataChart.length <= 0) {
-      manipulatedDataChart()
-    }
-    else {
-      return
-    }
+  }, [])
+
+  useEffect(() => {
+    manipulatedDataChart()
   }, [people])
 
   //chart configuration variable
   const infoChart = {
-    labels: labelChart ? labelChart : ['NoData'],
+    labels: labelChart ? labelChart : [],
     datasets: [
       {
-        data: dataChart ? dataChart : [0],
+        data: dataChart ? dataChart : [],
         backgroundColor: config.default.colours,
         borderColor: config.default.colours,
         borderWidth: 1,
@@ -60,55 +58,57 @@ const App: React.FC = () => {
 
   async function fetchPeople() {
     getPeople().then(({ data: { people } }) => { setPeople(people) })
-      .catch((err: Error) => toast.error(`${err}`, {
+      .catch((err: Error) => toast.error(`Erro! descritivo: ${err}`, {
         position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
+        autoClose: 3000,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
-        draggable: true
+        draggable: true,
+        progress: undefined,
       }))
   }
 
   const handleSavePeople = (e: React.FormEvent, formData: IPeople): void => {
-    e.preventDefault()
+    e.preventDefault();
     addPeople(formData)
-      .then(({ status }) => {
+      .then(async ({ status }) => {
         if (status === 200) {
           toast.success('Sucesso!', {
             position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
+            autoClose: 3000,
+            hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
-            draggable: true
+            draggable: true,
+            progress: undefined,
           });
-          /*
-          Todo:
-          Manipular Estados
-          */
-          delay(1000).then(() => {
-            window.location.reload();
-          });
+          const newPerson = newSavedArr(people, formData)
+          setPeople([]);
+          delay(500).then(async () => {
+            setPeople(await newPerson)
+          })
         }
         else {
           toast.error('Erro! não foi possivel concluir ação.', {
             position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
+            autoClose: 3000,
+            hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
-            draggable: true
+            draggable: true,
+            progress: undefined,
           });
         }
       })
-      .catch((err) => toast.error(`${err}`, {
+      .catch((err: Error) => toast.error(`${err}`, {
         position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
+        autoClose: 3000,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
-        draggable: true
+        draggable: true,
+        progress: undefined,
       }))
   }
 
@@ -132,38 +132,43 @@ const App: React.FC = () => {
         if (status === 200) {
           toast.success('Sucesso!', {
             position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
+            autoClose: 3000,
+            hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
-            draggable: true
+            draggable: true,
+            progress: undefined,
           });
           /*
           Todo:
           Manipular Estados
           */
-          delay(1000).then(() => {
-            window.location.reload();
-          });
+          const updatePeople = newDeletedArr(record.id, people)
+          setPeople([]);
+          delay(500).then(async () => {
+            setPeople(await updatePeople)
+          })
         }
         else {
-          toast.error('Erro! não foi possivel concluir ação.', {
+          toast.error('Erro!', {
             position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
+            autoClose: 3000,
+            hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
-            draggable: true
+            draggable: true,
+            progress: undefined,
           });
         }
       })
       .catch((err) => toast.error(`${err}`, {
         position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
+        autoClose: 3000,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
-        draggable: true
+        draggable: true,
+        progress: undefined,
       }))
   }
 
@@ -174,7 +179,7 @@ const App: React.FC = () => {
       <SecondaryText>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</SecondaryText>
       <DataInfo>
         <TableStyle>
-          <Table rowKey='lastName' dataSource={people ? people : []} pagination={{ pageSize: 2 }}>
+          <Table rowKey={record => record.id} dataSource={people ? people : []} pagination={{ pageSize: 2 }}>
             <Column title="First Name" dataIndex="firstName" key="firstName" />
             <Column title="Last Name" dataIndex="lastName" key="lastName" />
             <Column title="Participation" dataIndex="participation" key="participation" />
@@ -187,14 +192,14 @@ const App: React.FC = () => {
       </DataInfo>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
-        hideProgressBar
+        autoClose={3000}
+        hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
-        pauseOnHover
+        pauseOnHover={false}
       />
     </Main>
   )
