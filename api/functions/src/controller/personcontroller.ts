@@ -117,7 +117,7 @@ const addPerson = async (req: IRequest, res: Response) => {
       if (result + participation > 100) {
         res.status(401).send({
           status: "error",
-          message: "people not Added",
+          message: "Participation cant be higher than 100",
         });
       } else {
         const personObject = {

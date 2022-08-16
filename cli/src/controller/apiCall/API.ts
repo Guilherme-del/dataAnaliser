@@ -20,7 +20,7 @@ export const addPeople = async (
     const People: Omit<IPeople, "id"> = {
       firstName: formData.firstName,
       lastName: formData.lastName,
-      participation: Number(formData.participation),
+      participation: formData.participation,
     };
     const savePeople: AxiosResponse<ApiDataType> = await axios.post(
       config.baseUrl + "/addPerson",
