@@ -69,8 +69,7 @@ const App: React.FC = () => {
       }))
   }
 
-  const handleSavePeople = (e: React.FormEvent, formData: IPeople): void => {
-    e.preventDefault();
+  const handleSavePeople = (formData: IPeople): void => {
     addPeople(formData)
       .then(async ({ status }) => {
         if (status === 200) {
@@ -139,10 +138,6 @@ const App: React.FC = () => {
             draggable: true,
             progress: undefined,
           });
-          /*
-          Todo:
-          Manipular Estados
-          */
           const updatePeople = newDeletedArr(record.id, people)
           setPeople([]);
           delay(500).then(async () => {
