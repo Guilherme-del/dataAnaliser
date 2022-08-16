@@ -23,6 +23,8 @@ Inside the following path put your config.ts file
 put your `.env` && follow the 
 #### `cli/src/config/example.config.ts`
 
+## If you want to request my configuration files where there's my database url just request on my social medias [ask me!](https://github.com/Guilherme-del/Guilherme-del). I didn't left my conf files on repo because of [Security](https://firebase.google.com/docs/firestore/security/get-started).
+
 In the client directory, you can run:
 #### `npm i`
 #### `npm start`
