@@ -8,7 +8,7 @@ import * as config from "../config/config"
 import { Doughnut } from 'react-chartjs-2';
 import AddPeople from '../components/Addpeople'
 import { getPeople, addPeople, deletePeople } from '../controller/apiCall/API'
-import { delay, newSavedArr, newDeletedArr } from '../controller/mainFunc/mainFunc';
+
 //styles
 import "antd/dist/antd.css";
 import 'react-toastify/dist/ReactToastify.css';
@@ -71,7 +71,7 @@ const App: React.FC = () => {
 
   const handleSavePeople = (formData: IPeople): void => {
     addPeople(formData)
-      .then(async ({ status }) => {
+      .then(async ({ status,data }) => {
         if (status === 200) {
           toast.success('Sucesso!', {
             position: "top-right",
@@ -82,11 +82,7 @@ const App: React.FC = () => {
             draggable: true,
             progress: undefined,
           });
-          const newPerson = newSavedArr(people, formData)
-          setPeople([]);
-          delay(500).then(async () => {
-            setPeople(await newPerson)
-          })
+          setPeople(data.people)
         }
         else {
           toast.error('Erro! não foi possivel concluir ação.', {
@@ -100,7 +96,7 @@ const App: React.FC = () => {
           });
         }
       })
-      .catch((err: Error) => toast.error(`${err}`, {
+      .catch(() => toast.error(`Erro! não foi possivel concluir ação.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -115,19 +111,6 @@ const App: React.FC = () => {
   const handleUpdatePeople = (people: IPeople): void => {
     updatePeople(people)
       .then(({ status, data }) => {
-        if (status !== 200) {
-          throw new Error('Error! People not updated')
-        }
-        setPeople(data.people)
-      })
-        .catch((err) => console.log(err))
-   }
-  */
-
-  const handleDeletePeople = (e: any, record: any): void => {
-    e.preventDefault()
-    deletePeople(record.id)
-      .then(({ status }) => {
         if (status === 200) {
           toast.success('Sucesso!', {
             position: "top-right",
@@ -138,11 +121,47 @@ const App: React.FC = () => {
             draggable: true,
             progress: undefined,
           });
-          const updatePeople = newDeletedArr(record.id, people)
-          setPeople([]);
-          delay(500).then(async () => {
-            setPeople(await updatePeople)
-          })
+         setPeople(data.people)
+        }
+        else{
+          toast.error('Erro!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }      
+      })
+        .catch((err) => toast.error(`Erro! não foi possivel concluir ação.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+   }
+  */
+
+  const handleDeletePeople = (e: any, record: any): void => {
+    e.preventDefault()
+    deletePeople(record.id)
+      .then(({ status,data }) => {
+        if (status === 200) {
+          toast.success('Sucesso!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setPeople(data.people)
         }
         else {
           toast.error('Erro!', {
@@ -156,7 +175,7 @@ const App: React.FC = () => {
           });
         }
       })
-      .catch((err) => toast.error(`${err}`, {
+      .catch(() => toast.error(`Erro! não foi possivel concluir ação.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
