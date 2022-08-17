@@ -16,6 +16,18 @@ interface ChartLabel {
   label : Array
 }
 
+interface TableProps {
+  data: IPeople[];
+}
+
+interface PeopleContextData {
+  peopleList: IPeople[];
+  setPeople: Dispatch<SetStateAction<IPeople[]>>;
+  deletePerson(id?: string): Promise<void>;
+  fetchPeople(): Promise<void>;
+  addPerson(payload: IPeople): Promise<void>;
+}
+
 type PeopleProps = {
     people: IPeople
 }
