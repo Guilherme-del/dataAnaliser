@@ -2,6 +2,9 @@ import axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
 import { toast } from "react-toastify";
 
+/**
+ * Inicia load dados.
+ */
 export const getPeople = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {
     const todos: AxiosResponse<ApiDataType> = await axios.get(
@@ -13,6 +16,10 @@ export const getPeople = async (): Promise<AxiosResponse<ApiDataType>> => {
   }
 };
 
+/**
+ * Inclui uma pessoa.
+ *  * @param {*} formData
+ */
 export const addPeople = async (
   formData: IPeople
 ): Promise<AxiosResponse<ApiDataType>> => {
@@ -20,7 +27,7 @@ export const addPeople = async (
     const People: Omit<IPeople, "id"> = {
       firstName: formData.firstName,
       lastName: formData.lastName,
-      participation: Number(formData.participation),
+      participation: formData.participation,
     };
     const savePeople: AxiosResponse<ApiDataType> = await axios.post(
       config.baseUrl + "/addPerson",
@@ -32,15 +39,22 @@ export const addPeople = async (
   }
 };
 
+/**
+ * edita uma pessoa.
+ *  @param {*} id
+ *  @param {*} formData
+ */
 export const updatePeople = async (
-  todo: IPeople
+  id: string, formData: IPeople
 ): Promise<AxiosResponse<ApiDataType>> => {
   try {
-    const peopleUpdate: Pick<IPeople, "firstName"> = {
-      firstName: "true",
+    const peopleUpdate: Omit<IPeople, "id"> = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      participation: formData.participation,
     };
     const updatedPeople: AxiosResponse<ApiDataType> = await axios.put(
-      `${config.baseUrl}/editPeople/${todo}`,
+      `${config.baseUrl}/editPeople/${id}`,
       peopleUpdate
     );
     return updatedPeople;
@@ -49,6 +63,10 @@ export const updatePeople = async (
   }
 };
 
+/**
+ * remove uma pessoa.
+ *  @param {*} id
+ */
 export const deletePeople = async (
   id: string
 ): Promise<AxiosResponse<ApiDataType>> => {
