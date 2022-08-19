@@ -23,9 +23,9 @@ const App: React.FC = () => {
   const {
     addPerson,
     peopleList,
-    setToBeEdited,
     toBeEdited,
     fetchPeople,
+  //  _setModalVisibility,
     modalVisible,
   } = usePeople();
 
@@ -37,9 +37,11 @@ const App: React.FC = () => {
     manipulatedDataChart()
   }, [peopleList])
 
-  useEffect(() => {
-    setToBeEdited(toBeEdited)
-  }, [toBeEdited])
+ // useEffect(() => {
+ //   if (toBeEdited.firstName !== ""){
+ //       setModalVisibility(true)
+ //   }
+ // }, [setModalVisibility, toBeEdited])
 
   //chart configuration variable
   const infoChart = {
@@ -55,10 +57,10 @@ const App: React.FC = () => {
   };
 
   const manipulatedDataChart = (): void => {
-    const labelChart = peopleList.map((items) => {
+    const labelChart = peopleList.map((items: { firstName: string; lastName: string; }) => {
       return (items.firstName + ' ' + items.lastName)
     })
-    const dataChart = peopleList.map((items) => {
+    const dataChart = peopleList.map((items: { participation: any; }) => {
       return (items.participation)
     })
     setLabelChart(labelChart)
