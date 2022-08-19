@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2';
 import { ToastContainer } from 'react-toastify';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-//components
+//settings file
 import * as config from "../../config/config"
 import { usePeople } from "../../hook/people";
+//components
 import AddPeople from '../../components/Addpeople'
 import TableComponent from '../../components/table';
-
-
+import ModalPeopleContent from '../../components/EditModal';
 //styles
 import "antd/dist/antd.css";
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,21 +20,26 @@ const App: React.FC = () => {
 
   ChartJS.register(ArcElement, Tooltip, Legend);
 
-  const {   
+  const {
     addPerson,
     peopleList,
+    setToBeEdited,
+    toBeEdited,
     fetchPeople,
+    modalVisible,
   } = usePeople();
 
   useEffect(() => {
-    fetchPeople().then(()=>{
-      manipulatedDataChart()
-    }) 
+    fetchPeople()
   }, [fetchPeople])
 
   useEffect(() => {
-      manipulatedDataChart()
+    manipulatedDataChart()
   }, [peopleList])
+
+  useEffect(() => {
+    setToBeEdited(toBeEdited)
+  }, [toBeEdited])
 
   //chart configuration variable
   const infoChart = {
@@ -56,7 +61,6 @@ const App: React.FC = () => {
     const dataChart = peopleList.map((items) => {
       return (items.participation)
     })
-   
     setLabelChart(labelChart)
     setDataChart(dataChart)
   }
@@ -65,7 +69,7 @@ const App: React.FC = () => {
     <Main className='App'>
       <AddPeople savePeople={addPerson} />
       <PrimaryText>DATA</PrimaryText>
-      <SecondaryText>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</SecondaryText>
+      <SecondaryText>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</SecondaryText>     
       <DataInfo>
         <TableStyle>
           <TableComponent data={peopleList} />
@@ -74,6 +78,7 @@ const App: React.FC = () => {
           <Doughnut data={infoChart} />
         </ChartComponent>
       </DataInfo>
+      <ModalPeopleContent isVisible={modalVisible} data= {toBeEdited}/>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -85,7 +90,7 @@ const App: React.FC = () => {
         draggable
         pauseOnHover={false}
       />
-    </Main>
+    </Main >
   )
 }
 
