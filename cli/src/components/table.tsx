@@ -6,17 +6,23 @@ import { usePeople } from "../hook/people";
 const TableComponent: React.FC<TableProps> = ({ data }) => {
   const { Column, ColumnGroup } = Table;
   const {
-    deletePerson,
     peopleList,
-    setPeople
+    setPeople,
+    setToBeEdited,
+    setModalVisibility,
+    deletePerson,
   } = usePeople();
 
-  const deletePeople = useCallback(async (e: any, record: any) => {
-      e.preventDefault()
+  const deletePeople = useCallback(async ( record: IPeople) => {
       await deletePerson(record.id);
       let people = peopleList.filter(item => item.id !== record.id)
       setPeople([...people]);
   }, [deletePerson, peopleList, setPeople]);
+
+  const updatePeople = useCallback(async ( record: IPeople) => {
+   await setToBeEdited(record)
+  setModalVisibility(true)  
+}, [setModalVisibility,setToBeEdited]);
 
   return (
     <Table rowKey={record => record.id} dataSource={data ? data : []} pagination={{ pageSize: 2 }}>
@@ -26,8 +32,8 @@ const TableComponent: React.FC<TableProps> = ({ data }) => {
         <Column title="Participation" dataIndex="participation" key="participation" />
       </ColumnGroup>
       <ColumnGroup title="Actions">
-        <Column title="Remove" key="btns" render={(_text, record, _index) => <Button onClick={(e) => { deletePeople(e, record) }} icon={<DeleteOutlined />} />} />
-        <Column title="Edit" key="btns" render={(_text, record, _index) => <Button onClick={(e) => { console.log(e, record) }} icon={<EditOutlined />} />} />
+        <Column title="Edit" key="btns" render={(_text, record: IPeople, _index) => <Button onClick={(_e) => { updatePeople(record) }} icon={<EditOutlined />} />} />
+        <Column title="Remove" key="btns" render={(_text, record: IPeople, _index) => <Button onClick={(_e) => { deletePeople(record) }} icon={<DeleteOutlined />} />} />      
       </ColumnGroup>
     </Table>
   );

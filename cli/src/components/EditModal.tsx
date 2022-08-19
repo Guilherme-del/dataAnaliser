@@ -1,27 +1,41 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable no-unused-vars */
 import React from 'react';
-import { Button, Form, Input,InputNumber } from "antd";
-
-import { FormArea } from "../assets/styles/styled"
+import { Form, Input, InputNumber, Modal } from "antd";
+//settings
+import { usePeople } from '../hook/people';
+//style
 import "antd/dist/antd.css";
-import { SendOutlined } from '@ant-design/icons';
 
-type Props = {
-  editPeople: (e: IPeople) => void
-}
-
-const ModalPeopleContent: React.FC<Props> = ({editPeople}) => {
+const ModalPeopleContent: React.FC<editModalvisibleProps> = ({ isVisible,data }) => {
   const [form] = Form.useForm();
- 
-  const onFinish = (values : IPeople | any) => {
-    editPeople(values);
+
+  const {
+    setModalVisibility,
+    handleUpdatePerson
+  } = usePeople();
+
+  const handleOk = () => {
+    form
+      .validateFields()
+      .then(async values => {      
+        values.id = data.id
+        await handleUpdatePerson(values)
+        form.resetFields();
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
+
+    setModalVisibility(false);
+  };
+
+  const handleCancel = () => {
+    setModalVisibility(false);
     form.resetFields();
   };
 
   return (
-  <FormArea>
-    <Form form={form} layout="inline" initialValues={{ firstName:'',lastName:'',participation:'' }} onFinish = {onFinish}>
+    <Modal maskClosable={false} key={Math.random()} title="Edit person" visible={isVisible} onOk={() => { handleOk() }} onCancel={handleCancel}>
+      <Form id="EditForm" form={form} layout="vertical" initialValues={{ firstName: data.firstName, lastName: data.lastName, participation: data.participation }} onFinish={handleOk} >
         <Form.Item name="firstName" rules={[{ required: true, message: 'Please input your first name!' }]}>
           <Input placeholder='First Name' type='text' id='firstName' />
         </Form.Item>
@@ -31,12 +45,9 @@ const ModalPeopleContent: React.FC<Props> = ({editPeople}) => {
         <Form.Item rules={[{ required: true, message: 'Please input your participation!' }]} name="participation">
           <InputNumber min={1} max={100} placeholder='Participation' type='text' id='participation' />
         </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" size='middle' icon={<SendOutlined />}> SEND </Button>
-        </Form.Item>
-    </Form>
-  </FormArea>
-  )
-}
+      </Form>
+    </Modal>
+  );
+};
 
 export default ModalPeopleContent

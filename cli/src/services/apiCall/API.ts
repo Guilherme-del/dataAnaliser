@@ -45,16 +45,16 @@ export const addPeople = async (
  *  @param {*} formData
  */
 export const updatePeople = async (
-  id: string, formData: IPeople
+  record: IPeople
 ): Promise<AxiosResponse<ApiDataType>> => {
   try {
     const peopleUpdate: Omit<IPeople, "id"> = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      participation: formData.participation,
+      firstName: record.firstName,
+      lastName: record.lastName,
+      participation: record.participation,
     };
     const updatedPeople: AxiosResponse<ApiDataType> = await axios.put(
-      `${config.baseUrl}/editPeople/${id}`,
+      `${config.baseUrl}/updatePerson/${record.id}`,
       peopleUpdate
     );
     return updatedPeople;

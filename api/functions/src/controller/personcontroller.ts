@@ -221,28 +221,29 @@ const addPerson = async (req: IRequest, res: Response) => {
  */
 const updatePerson = async (req: IRequest, res: Response) => {
   const {body: {firstName, lastName, participation}, params: {peopleId}} = req;
-
   try {
-    const people = db.collection("people").doc(peopleId);
-    const currentData = (await people.get()).data() || {};
     const allPeople: PeopleType[] = [];
-    currentData.forEach((doc: any) => allPeople.push(doc.data()));
-
-    const result = allPeople.reduce<number>((accumulator, obj) => {
+    const querySnapshot = await db.collection("people").get();
+    querySnapshot.forEach((doc: any) => allPeople.push(doc.data()));
+    const newBody = allPeople.filter((obj : any) => {
+      return obj.id !== peopleId;
+    });
+    const value = newBody.reduce<number>((accumulator, obj) => {
       return accumulator + obj.participation;
     }, 0);
-
-    const personObject = {
-      firsName: firstName || currentData.firsName,
-      lastName: lastName || currentData.lastName,
-      participation: participation || currentData.participation,
-    };
-    if (result + participation > 100) {
+    if (value + participation > 100) {
       res.status(401).send({
         status: "error",
         message: "Participation cant be higher than 100",
       });
     } else {
+      const people = db.collection("people").doc(peopleId);
+      const personObject = {
+        id: peopleId,
+        firstName: firstName,
+        lastName: lastName,
+        participation: participation,
+      };
       await people.set(personObject).catch((error) => {
         return res.status(400).json({
           status: "error",

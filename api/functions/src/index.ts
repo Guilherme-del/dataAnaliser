@@ -16,7 +16,7 @@ app.use(cors({origin: true}));
 // as doc says routes component shoul be on index file
 app.get("/listPerson", getPeople);
 app.post("/addPerson", addPerson);
-app.put("/addPerson", updatePerson);
+app.put("/updatePerson/:peopleId", updatePerson);
 app.delete("/deletePerson/:peopleId", deletePerson);
 
 exports.app = functions.https.onRequest(app);

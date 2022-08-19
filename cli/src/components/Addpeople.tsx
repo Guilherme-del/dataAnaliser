@@ -2,10 +2,9 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { Button, Form, Input,InputNumber } from "antd";
-
+import { SendOutlined } from '@ant-design/icons';
 import { FormArea } from "../assets/styles/styled"
 import "antd/dist/antd.css";
-import { SendOutlined } from '@ant-design/icons';
 
 type Props = {
   savePeople: (e: IPeople) => void
