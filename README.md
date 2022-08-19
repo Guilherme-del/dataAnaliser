@@ -10,6 +10,7 @@
 <p align = "center">
 <img  src= './showcase/showCase.gif' >
 </p>
+
 ## Running the project
 This is a [React.js](https://reactjs.org/) project bootstrapped with [`create-react-app`](https://reactjs.org/docs/create-a-new-react-app.html).
 
