@@ -20,9 +20,9 @@ const TableComponent: React.FC<TableProps> = ({ data }) => {
   }, [deletePerson, peopleList, setPeople]);
 
   const updatePeople = useCallback(async ( record: IPeople) => {
-   await setToBeEdited(record)
-  setModalVisibility(true)  
-}, [setModalVisibility,setToBeEdited]);
+  setToBeEdited(record)
+  setModalVisibility(true)
+}, [setToBeEdited,setModalVisibility]);
 
   return (
     <Table rowKey={record => record.id} dataSource={data ? data : []} pagination={{ pageSize: 2 }}>

@@ -1,30 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, InputNumber, Modal } from "antd";
 //settings
 import { usePeople } from '../hook/people';
 //style
 import "antd/dist/antd.css";
 
-const ModalPeopleContent: React.FC<editModalvisibleProps> = ({ isVisible,data }) => {
+const ModalPeopleContent: React.FC<editModalvisibleProps> = ({ isVisible }) => {
   const [form] = Form.useForm();
-
   const {
     setModalVisibility,
+    toBeEdited,
     handleUpdatePerson
   } = usePeople();
 
+  useEffect(() => {
+    form.setFieldsValue(toBeEdited)
+   }, [form, toBeEdited])
+   
   const handleOk = () => {
     form
       .validateFields()
       .then(async values => {      
-        values.id = data.id
+        values.id = toBeEdited.id
         await handleUpdatePerson(values)
         form.resetFields();
       })
       .catch(info => {
         console.log('Validate Failed:', info);
       });
-
     setModalVisibility(false);
   };
 
@@ -34,8 +37,8 @@ const ModalPeopleContent: React.FC<editModalvisibleProps> = ({ isVisible,data })
   };
 
   return (
-    <Modal maskClosable={false} key={Math.random()} title="Edit person" visible={isVisible} onOk={() => { handleOk() }} onCancel={handleCancel}>
-      <Form id="EditForm" form={form} layout="vertical" initialValues={{ firstName: data.firstName, lastName: data.lastName, participation: data.participation }} onFinish={handleOk} >
+    <Modal forceRender maskClosable={false} key={Math.random()} title="Edit person" visible={isVisible} onOk={() => { handleOk() }} onCancel={handleCancel}>
+      <Form id="EditForm" form={form} layout="vertical" initialValues={toBeEdited} onFinish={handleOk} >
         <Form.Item name="firstName" rules={[{ required: true, message: 'Please input your first name!' }]}>
           <Input placeholder='First Name' type='text' id='firstName' />
         </Form.Item>
