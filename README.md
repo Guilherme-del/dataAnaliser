@@ -1,4 +1,4 @@
-# t10Assessment
+# DataAnaliser
 
 ## Built with
 * [Node.js](https://nodejs.org/en/)
